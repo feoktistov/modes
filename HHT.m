@@ -122,6 +122,8 @@ while(  S_crit && iterations < maxInnerIterations)
         break;
     end;
     m(isnan(m))=0;
+    [mw,mh] = size(m);
+    [hw,hh] = size(h1);
     h1 = h1 - m;
     S_crit = (maxCount ~= curMaxCount || minCount ~= curMinCount);
     maxCount = curMaxCount;

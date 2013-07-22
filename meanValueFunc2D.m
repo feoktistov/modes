@@ -6,8 +6,8 @@ end
 
 [w,h] = size(image);
 
-x = 1:w;
-y = 1:h;
+x = 1:h;
+y = 1:w;
 [XI,YI] = meshgrid(x,y);
 
 %[max,imax,min,imin] = getExtrema(image);
