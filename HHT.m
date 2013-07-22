@@ -1,4 +1,4 @@
-function [cn, r] = HHT(data,method,threshold)
+function [cn, hn, r] = HHT(data,method,threshold)
 
 if nargin < 2
     method = 'linear';
@@ -34,10 +34,13 @@ while( (curSum > maxSum*0.1) && index < 10)
     end;
     r = x - c;
     x = r;
+    h = imag(hilbert(c));
     if(dim == 2)
        cn(index,:,:) = c;
+       hn(index,:,:) = h;
     else
        cn(index,:) = c;
+       hn(index,:) = h;
     end;
     curSum = sum(abs(x(:)));
     fprintf('curSum  %f maxSum %f \n',curSum, maxSum);
@@ -122,8 +125,6 @@ while(  S_crit && iterations < maxInnerIterations)
         break;
     end;
     m(isnan(m))=0;
-    [mw,mh] = size(m);
-    [hw,hh] = size(h1);
     h1 = h1 - m;
     S_crit = (maxCount ~= curMaxCount || minCount ~= curMinCount);
     maxCount = curMaxCount;

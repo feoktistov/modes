@@ -17,12 +17,17 @@ Image = mat2gray(image);
 name = strcat('data/',source,'.bmp');
 imwrite(Image,name);
 
-[cn,r] = HHT(image,approximation);
+[cn,hn,r] = HHT(image,approximation);
 [k n m] = size(cn);
 for t = 1 : k
     ct = reshape(cn(t, :, :), n, m);
     Image = mat2gray(ct);
     name = sprintf(strcat('data/',source,'_',approximation,'_mode_%d.bmp'), t);
+    imwrite(Image,name);
+    
+    ht = reshape(hn(t, :, :), n, m);
+    Image = mat2gray(ht);
+    name = sprintf(strcat('data/',source,'_',approximation,'_mode_%d_hilbert.bmp'), t);
     imwrite(Image,name);
 end;
 Image = mat2gray(r);
