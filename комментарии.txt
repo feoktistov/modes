@@ -1,0 +1,33 @@
+Параметры 
+image - входное изображение [n,m] элементов
+method - метод аппроксимации, может принимать значения
+'linear', 'cubic', 'v4', 'rbf'
+threshold - порогове значения используется для критерия SD 
+(значения от 0 до 1, надо подбирать оптимальное),
+если threshold не указан, то используется критерий S.
+
+cn - эмпирические моды - [k,n,m] - где k - число мод
+r - остаток или линия тренда
+
+
+function [cn, r] = HHT(image,method,threshold)
+
+Пример
+
+source = 'heightmap'; % выбираем изображение
+approximation = 'v4'; % выбираем тип аппроксимации
+[cn,r] = HHT(imread(strcat(source,'.bmp')),approximation); % применяем разложение на моды
+
+%сохраняем полученные моды в файлы
+[k n m] = size(cn); 
+for t = 1 : k
+    ct = reshape(cn(t, :, :), n, m);
+    Image = mat2gray(ct);
+    name = sprintf(strcat('data/',source,'_',approximation,'_mode_%d.bmp'), t);
+    imwrite(Image,name);
+end;
+
+%сохраняем линию тренда в файл
+Image = mat2gray(r);
+name = sprintf(strcat('data/',source,'_',approximation,'_trend.bmp'));
+imwrite(Image,name);

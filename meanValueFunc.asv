@@ -1,0 +1,70 @@
+function [h,maxCount,minCount] = meanValueFunc(array, method)
+
+if nargin < 2
+    method = 'linear';
+end
+
+l= size(array);
+
+xi = 1:l;
+[xmax,imax,xmin,imin] = extrema(array);
+
+maxCount = size(xmax);
+minCount = size(xmin)
+if( > 1 &&  > 1)
+    max = interp1(imax,xmax,xi, 'spline');
+    min = interp1(imin,xmin,xi, 'spline');
+    h = (max + min)/2;
+else
+    h = array;
+end;
+
+
+x = 1:w;
+y = 1:h;
+z = double(image);
+[XI,YI] = meshgrid(x,y);
+
+
+min = imregionalmin(image);
+index = 1;
+for n = 1 : w
+   for m = 1 : h
+       if(min(n,m) == 1)
+           minX(index) = n;
+           minY(index) = m;
+           minZ(index) = z(n,m);
+           index = index + 1;
+       end;
+   end; 
+end;
+minCount = index;
+
+max = imregionalmax(image);
+index = 1;
+for n = 1 : w
+   for m = 1 : h
+       if(max(n,m) == 1)
+           maxX(index) = n;
+           maxY(index) = m;
+           maxZ(index) = z(n,m);
+           index = index + 1;
+       end;
+   end; 
+end;
+maxCount = index;
+
+if(maxCount > 3 && minCount > 3)
+    if (strcmp(method,'rbf'))
+        minZI = rbfinterp([XI(:)'; YI(:)'], rbfcreate([minX; minY], minZ,'RBFFunction', 'multiquadric', 'RBFConstant', 1));
+        maxZI = rbfinterp([XI(:)'; YI(:)'], rbfcreate([minX; minY], minZ,'RBFFunction', 'multiquadric', 'RBFConstant', 1));
+        minZI = reshape(minZI, size(XI));
+        maxZI = reshape(maxZI, size(XI));
+    else
+        minZI = griddata(minX,minY,minZ,XI,YI,method);
+        maxZI = griddata(maxX,maxY,maxZ,XI,YI,method);
+    end;
+    h = (minZI + maxZI)/2;
+else
+    h = image;
+end;
