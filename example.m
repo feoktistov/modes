@@ -1,6 +1,23 @@
+maxSize = 100;
 source = 'ireland';
 approximation = 'rbf';
-[cn,r] = HHT(imread(strcat(source,'.png')),approximation);
+extension = '.png';
+image = imread(strcat(source,extension));
+if(length(size(image)) == 3)
+    image = sum(image,3);
+end;
+
+
+[w,h] = size(image);
+w = min(w,maxSize);
+h = min(h,maxSize);
+image = image(1:w,1:h);
+
+Image = mat2gray(image);
+name = strcat('data/',source,'.bmp');
+imwrite(Image,name);
+
+[cn,r] = HHT(image,approximation);
 [k n m] = size(cn);
 for t = 1 : k
     ct = reshape(cn(t, :, :), n, m);

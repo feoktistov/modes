@@ -10,8 +10,17 @@ else
     use_S_Method = false;
 end
 
-dim = ndims(data);
-fprintf('maxSum  %f\n',maxSum);
+[w,h] = size(data);
+dim = 2;
+if( w == 1)
+    dim = 1;
+end;
+if( h == 1)
+    data =reshape(data,1,w);
+    dim = 1;
+end;
+
+fprintf('Dim  %d\n',dim);
 x = double(data);
 maxSum = sum(abs(x(:)));
 curSum = maxSum;
@@ -37,10 +46,9 @@ end;
 
 if(dim == 2)
     [w,h] = size(data);
-    res = reshape(sum(cn),w,h) + r - double(image);
+    %res = reshape(sum(cn),w,h) + r - double(image);
 else 
-    [l] = size(data);
-    res = reshape(sum(cn),l) + r - double(image);
+    res = sum(cn) + r - double(image);
 end;
 fprintf('res  %f\n',sum(res(:)));
 
@@ -48,7 +56,7 @@ fprintf('res  %f\n',sum(res(:)));
 function h = SD_calc(h1,threshold, method)
 fprintf('Use SD criteria\n');
 maxInnerIterations = 100;
-dim = ndims(h1);
+dim = getDim(h1);
 minExtremumCount = dim + 2;
 SD = threshold*2;
 iterations = 0;
@@ -88,7 +96,7 @@ r=sum(t1(:))/sum(t2(:));
 function h = S_calc(h1, method)
 fprintf('Use S criteria\n');
 maxInnerIterations = 100;
-dim = ndims(h1);
+dim = getDim(h1);
 minExtremumCount = dim + 2;
 iterations = 0;
 maxCount = 0;
@@ -96,9 +104,9 @@ minCount = 0;
 S_crit = true;
 while(  S_crit && iterations < maxInnerIterations)
     if(dim == 2)
-        [m, maxCount, minCount] = meanValueFunc2D(h1,method);
+        [m, curMaxCount, curMinCount] = meanValueFunc2D(h1,method);
     else
-        [m, maxCount, minCount] = meanValueFunc(h1);
+        [m, curMaxCount, curMinCount] = meanValueFunc(h1);
     end;
     if(curMaxCount < minExtremumCount || curMinCount < minExtremumCount)
         break;
@@ -118,4 +126,13 @@ else
 end;
 
 h = h1;
+
+
+function d = getDim(h)
+[w,h] = size(h);
+if( w == 1|| h == 1)
+    d = 1;
+else 
+    d = 2;
+end;
 

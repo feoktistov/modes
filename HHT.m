@@ -26,7 +26,7 @@ maxSum = sum(abs(x(:)));
 curSum = maxSum;
 index = 1;
 fprintf('maxSum  %f\n',maxSum);
-while( (curSum > maxSum*0.1) || index > 10)
+while( (curSum > maxSum*0.1) && index < 10)
     if(use_S_Method)
         c = S_calc(x, method);
     else
@@ -40,13 +40,23 @@ while( (curSum > maxSum*0.1) || index > 10)
        cn(index,:) = c;
     end;
     curSum = sum(abs(x(:)));
-    fprintf('curSum  %f\n',curSum);
+    fprintf('curSum  %f maxSum %f \n',curSum, maxSum);
     index = index + 1;
+end;
+
+if(index >= 10)
+   fprintf('error: bad input data. To many modes\n'); 
+   fprintf('curSum  %f maxSum %f \n',curSum, maxSum);
 end;
 
 if(dim == 2)
     [w,h] = size(data);
-    res = reshape(sum(cn),w,h) + r - double(image);
+    if(index > 2)
+        sum_cn = reshape(sum(cn),w,h);
+    else 
+        sum_cn = reshape(cn,w,h);  
+    end;
+    res = sum_cn + r - double(data);
 else 
     res = sum(cn) + r - double(image);
 end;
