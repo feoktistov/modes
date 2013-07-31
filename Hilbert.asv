@@ -1,0 +1,12 @@
+function [r] = HilbertByAngle(data, angle)
+F = fourier(data);
+[w,h] = size(F);
+for i = 1 : w
+    for j = 1 : h
+        Fa(i,j) = 0;
+        t = cos(angle)*i + sin(angle)*j;
+        if(t == 0)
+            
+        else
+    end;
+end;

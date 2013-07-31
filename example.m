@@ -1,7 +1,7 @@
 maxSize = 100;
-source = 'ireland';
+source = '8';
 approximation = 'rbf';
-extension = '.png';
+extension = '.jpg';
 image = imread(strcat(source,extension));
 if(length(size(image)) == 3)
     image = sum(image,3);

@@ -16,7 +16,7 @@ if( w == 1)
     dim = 1;
 end;
 if( h == 1)
-    data =reshape(data,1,w);
+    data = reshape(data,1,w);
     dim = 1;
 end;
 
