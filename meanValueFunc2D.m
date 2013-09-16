@@ -11,7 +11,8 @@ y = 1:w;
 [XI,YI] = meshgrid(x,y);
 
 %[max,imax,min,imin] = getExtrema(image);
-[max,imax,min,imin] = extrema2(image);
+[max,imax,min,imin] = getExtremaByMorfologicalReconstruction(image);
+%[max,imax,min,imin] = extrema2(image);
 
 [maxCount, t] = size(imax);
 [minCount, t] = size(imin);
@@ -61,10 +62,73 @@ for n = 1 : w
    end; 
 end;
 
-subplot(2,1,1), imagesc(min);
-hold on;
-subplot(2,1,2), imagesc(max);
-hold off;
+maxi = maxi';
+maxZ = maxZ';
+
+
+
+function [maxZ,maxi,minZ,mini] = getExtremaByMorfologicalReconstruction(image)
+ 
+[w,h] = size(image);
+z = double(image);
+
+max = z - imreconstruct(z - 1,z);
+min = -z - imreconstruct(-z - 1,-z);
+
+index = 1;
+for n = 1 : w
+   for m = 1 : h
+       if(min(n,m) == 1)
+           mini(index) = sub2ind(size(image), n, m);
+           minZ(index) = z(n,m);
+           index = index + 1;
+       end;
+   end; 
+end;
+
+mini = mini';
+minZ = minZ';
+
+index = 1;
+for n = 1 : w
+   for m = 1 : h
+       if(max(n,m) == 1)
+           maxi(index) = sub2ind(size(image), n, m);
+           maxZ(index) = z(n,m);
+           index = index + 1;
+       end;
+   end; 
+end;
 
 maxi = maxi';
 maxZ = maxZ';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
