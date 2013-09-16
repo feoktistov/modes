@@ -1,7 +1,7 @@
-maxSize = 150;
-source = '8';
-approximation = 'rbf';
-extension = '.jpg';
+maxSize = 150; %Максимальный размер изображения
+source = '8'; %Имя изображения. Изоюражение должно лежать в той же папке что и скрипт
+approximation = 'rbf'; %Аппроксимирующая функция
+extension = '.jpg'; %Формат изображения
 image = imread(strcat(source,extension));
 if(length(size(image)) == 3)
     image = sum(image,3);
