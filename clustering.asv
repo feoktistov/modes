@@ -1,4 +1,4 @@
-function [resW, resM, resMW, resMWD, resMD] = clustering(cn, clusters)
+function [resW, resM, resMW, resWD, resMD] = clustering(cn, clusters)
 [k n m] = size(cn);
 
 W = zeros(k,n-1,m);
@@ -66,12 +66,9 @@ end;
 
 
 
-resMWD = resMW;
+
+resWD = resW;
 resMD = resM;
-for n = 1:20
-    resMWD = mdilatation(resMWD);
-    resMD = mdilatation(resMD);
-end;
 
 
 
