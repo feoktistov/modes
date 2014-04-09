@@ -1,4 +1,4 @@
-function [cn, hxn, hyn, hn, r] = HHT(data,method,threshold)
+function [cn, r] = HHT(data,method,threshold)
 
 if nargin < 2
     method = 'linear';
@@ -34,18 +34,10 @@ while( (curSum > maxSum*0.1) && index < 10)
     end;
     r = x - c;
     x = r;
-    hx = imag(hilbert(c));
-    hy = imrotate(imag(hilbert(imrotate(c,90))),-90);
     if(dim == 2)
        cn(index,:,:) = c;
-       hxn(index,:,:) = diff(hx);
-       hyn(index,:,:) = diff(hy);
-       hn(index,:,:) = diff(hx.*hy);
     else
        cn(index,:) = c;
-       hxn(index,:) = diff(hx);
-       hyn(index,:) = diff(hy);
-       hn(index,:) = diff(hx.*hy);
     end;
     curSum = sum(abs(x(:)));
     fprintf('curSum  %f maxSum %f \n',curSum, maxSum);
@@ -113,7 +105,7 @@ r=sum(t1(:))/sum(t2(:));
 
 function h = S_calc(h1, method)
 fprintf('Use S criteria\n');
-maxInnerIterations = 100;
+maxInnerIterations = 10;
 dim = getDim(h1);
 minExtremumCount = dim + 2;
 iterations = 0;
